@@ -1,0 +1,151 @@
+/* NewDiscussionModal.css */
+.new-discussion-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.new-discussion-modal-container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 800px;
+  width: 90%;
+}
+
+.new-discussion-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.new-discussion-modal-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333333;
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  color: #333333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-button:hover {
+  color: #ff6b6b;
+}
+
+.new-discussion-modal-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #f5f5f5;
+  color: #333333;
+  box-sizing: border-box; /* Add this line */
+}
+
+.form-group textarea {
+  height: 150px;
+}
+
+.image-upload-container {
+  display: flex;
+  align-items: center;
+}
+
+.image-upload-label {
+  background-color: #ff6b6b;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.image-upload-label i {
+  margin-right: 5px;
+}
+
+.image-upload-input {
+  display: none;
+}
+
+.image-upload-text {
+  color: #333333;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+  width: 120px; /* Increased fixed width */
+  height: 40px; /* Added fixed height */
+  display: flex; /* Added display flex */
+  justify-content: center; /* Added justify-content center */
+  align-items: center; /* Added align-items center */
+}
+
+.submit-button {
+  background-color: #ff6b6b;
+  color: #ffffff;
+}
+
+.submit-button:hover {
+  background-color: #ff4f4f;
+}
+
+.cancel-button {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.cancel-button:hover {
+  background-color: #222222;
+}

@@ -1,0 +1,75 @@
+/* Preference.css */
+.preference-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .preference-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .preference-form {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+  }
+  
+  .form-group {
+    margin-bottom: 30px;
+  }
+  
+  label {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  
+  input[type="text"],
+  select {
+    padding: 15px;
+    font-size: 16px;
+    border: none;
+    background-color: #2c2c2e;
+    color: #ffffff;
+    border-radius: 4px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  input[type="text"]:focus,
+  select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #007aff;
+  }
+  
+  input[type="file"] {
+    margin-top: 10px;
+  }
+  
+  .submit-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #007aff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    align-self: center;
+    margin-top: 30px;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
