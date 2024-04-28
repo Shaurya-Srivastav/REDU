@@ -41,21 +41,17 @@ const DiscussionBoard = () => {
     'Sociology',
   ];
 
-  const itemsPerPage = 6;
+  const itemsPerPage = 8;
 
   useEffect(() => {
-    fetchDiscussions();
-  }, [currentPage, searchQuery, selectedCategory]);
+    fetchDiscussions(searchQuery, selectedCategory);
+  }, [currentPage]);
 
   const fetchDiscussions = async (searchQuery = '', category = '') => {
     setLoading(true);
     try {
       let url = 'http://150.136.47.221:5000/api/discussions';
       const params = [];
-
-      if (searchQuery) {
-        params.push(`search=${searchQuery}`);
-      }
 
       if (category) {
         params.push(`category=${category}`);
@@ -69,7 +65,20 @@ const DiscussionBoard = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Fetched discussions:', data);
-        setDiscussions(data);
+
+        // Filter the discussions based on the search query
+        const filteredDiscussions = data.filter((discussion) => {
+          const lowercaseTitle = discussion.title.toLowerCase();
+          const lowercaseContent = discussion.content.toLowerCase();
+          const lowercaseQuery = searchQuery.toLowerCase();
+
+          return (
+            lowercaseTitle.includes(lowercaseQuery) ||
+            lowercaseContent.includes(lowercaseQuery)
+          );
+        });
+
+        setDiscussions(filteredDiscussions);
       } else {
         console.error('Error fetching discussions:', response.status);
       }
@@ -82,14 +91,25 @@ const DiscussionBoard = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    setSelectedCategory('');
     setCurrentPage(1);
-    fetchDiscussions(searchQuery, selectedCategory);
+    fetchDiscussions(searchQuery, '');
   };
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setCurrentPage(1);
-    fetchDiscussions('', category);
+
+    const filteredDiscussions = discussions.filter((discussion) => {
+      return discussion.category === category;
+    });
+
+    if (filteredDiscussions.length === 0) {
+      alert('No results found for the selected category.');
+      return;
+    }
+
+    setDiscussions(filteredDiscussions);
   };
 
   const handlePostDiscussion = () => {
@@ -98,7 +118,7 @@ const DiscussionBoard = () => {
 
   const handleNewDiscussionSubmit = () => {
     setShowNewDiscussionModal(false);
-    fetchDiscussions();
+    fetchDiscussions(searchQuery, selectedCategory);
   };
 
   const handleCloseNewDiscussionModal = () => {
@@ -162,7 +182,12 @@ const DiscussionBoard = () => {
       </div>
       <div className="discussion-board-main">
         <div className="sidebar">
-          <h3>Categories</h3>
+          <div className="sidebar-header">
+            <h3>Categories</h3>
+            <button className="reset-button" onClick={() => window.location.reload()}>
+              Reset
+            </button>
+          </div>
           <ul>
             {categories.map((category) => (
               <li
@@ -175,7 +200,6 @@ const DiscussionBoard = () => {
             ))}
           </ul>
         </div>
-
         <div className="discussion-board-content">
           <br />
           <br />

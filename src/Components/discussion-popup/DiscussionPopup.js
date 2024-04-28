@@ -53,6 +53,15 @@ const DiscussionPopup = ({ discussion, onClose }) => {
               ))}
             </div>
           )}
+          <div className="reply-section">
+            <textarea
+              value={reply}
+              onChange={handleReplyChange}
+              placeholder="Write a reply..."
+              className="reply-textarea"
+            ></textarea>
+            <button onClick={handleReplySubmit}>Reply</button>
+          </div>
           <div className="discussion-replies">
             <h3>Replies</h3>
             {discussion.replies && discussion.replies.map((reply) => (
@@ -61,16 +70,6 @@ const DiscussionPopup = ({ discussion, onClose }) => {
                 <p className="reply-timestamp">{new Date(reply.created_at).toLocaleString()}</p>
               </div>
             ))}
-          </div>
-        </div>
-        <div className="discussion-popup-footer">
-          <div className="reply-section">
-            <textarea
-              value={reply}
-              onChange={handleReplyChange}
-              placeholder="Write a reply..."
-            ></textarea>
-            <button onClick={handleReplySubmit}>Reply</button>
           </div>
         </div>
       </div>
