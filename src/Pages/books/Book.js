@@ -1,34 +1,59 @@
-// Book.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Book.css';
 import profileImage from '../../Assets/profile-placeholder.jpeg';
+import Pagination from '../../Components/pagination/Pagination';
 
 const Book = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showFullText, setShowFullText] = useState({});
   const resultsPerPage = 10;
   const navigate = useNavigate();
+  const maxPreviewLength = 200; // Maximum number of characters to display in the preview
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    // TODO: Perform the search based on the searchQuery and update the searchResults state
-    // For demonstration purposes, let's assume we have a fixed set of search results
-    const dummyResults = [
-      { id: 1, title: 'Book 1', author: 'Author 1', description: 'Description 1' },
-      { id: 2, title: 'Book 2', author: 'Author 2', description: 'Description 2' },
-      // Add more dummy search results
-    ];
-    setSearchResults(dummyResults);
-    setCurrentPage(1);
+    setIsLoading(true); // Set loading state to true
+
+    try {
+      const response = await fetch('http://150.136.47.221:5000/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: searchQuery }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSearchResults(data);
+        setCurrentPage(1);
+      } else {
+        console.error('Error searching textbooks:', response.status);
+      }
+    } catch (error) {
+      console.error('Error searching textbooks:', error);
+    }
+
+    setIsLoading(false); // Set loading state to false
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch(e);
+    }
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
   const currentResults = searchResults.slice(indexOfFirstResult, indexOfLastResult);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleDashboardClick = () => {
     navigate('/dashboard');
@@ -40,6 +65,13 @@ const Book = () => {
 
   const handleDiscussionClick = () => {
     navigate('/discussion');
+  };
+
+  const toggleFullText = (bookIndex) => {
+    setShowFullText((prevState) => ({
+      ...prevState,
+      [bookIndex]: !prevState[bookIndex],
+    }));
   };
 
   return (
@@ -56,34 +88,56 @@ const Book = () => {
       <div className="book-main">
         <h1>Textbook Search</h1>
         <form className="search-form" onSubmit={handleSearch}>
-          <input
-            type="text"
-            placeholder="Search textbooks..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <br></br>
-          <button type="submit">Search</button>
+          <div className="search-input-container">
+            <input
+              type="text"
+              placeholder="Search textbooks..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <button type="submit">Search</button>
+          </div>
         </form>
-        <div className="search-results">
-          {currentResults.map((book, index) => (
-            <div key={book.id} className="book-card" style={{ animationDelay: `${index * 0.2}s` }}>
-              <img src={book.image} alt={book.title} className="book-image" />
-              <div className="book-details">
-                <h3>{book.title}</h3>
-                <p>Author: {book.author}</p>
-                <p>Description: {book.description}</p>
+        {isLoading ? (
+          <div className="loading-animation">
+            <div className="loading-spinner"></div>
+          </div>
+        ) : (
+          <div className="search-results">
+            {currentResults.map((book, index) => (
+              <div key={index} className="book-card">
+                <div className="book-details">
+                  <h3>{book.Title}</h3>
+                  <p>Page Number: {book.Page_Number}</p>
+                  <p>
+                    Page Text Preview:{' '}
+                    {showFullText[index] ? book.Page_Text : `${book.Page_Text.slice(0, maxPreviewLength)}...`}
+                    {book.Page_Text.length > maxPreviewLength && (
+                      <span
+                        className="read-more"
+                        onClick={() => toggleFullText(index)}
+                      >
+                        {showFullText[index] ? 'Read Less' : 'Read More'}
+                      </span>
+                    )}
+                  </p>
+                  <a href={book.URL} target="_blank" rel="noopener noreferrer">
+                    View PDF
+                  </a>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-        <div className="pagination">
-          {Array.from({ length: Math.ceil(searchResults.length / resultsPerPage) }).map((_, index) => (
-            <button key={index} onClick={() => paginate(index + 1)}>
-              {index + 1}
-            </button>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+        {searchResults.length > 0 && (
+          <Pagination
+            itemsPerPage={resultsPerPage}
+            totalItems={searchResults.length}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        )}
       </div>
     </div>
   );

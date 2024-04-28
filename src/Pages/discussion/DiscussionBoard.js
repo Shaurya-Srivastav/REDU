@@ -203,9 +203,9 @@ const DiscussionBoard = () => {
         <div className="discussion-board-content">
           <br />
           <br />
-          {/* <button className="clear-discussions-button" onClick={handleClearDiscussions}>
+          <button className="clear-discussions-button" onClick={handleClearDiscussions}>
             Clear Discussions
-          </button> */}
+          </button>
           <div className="search-bar">
             <form onSubmit={handleSearch}>
               <input
