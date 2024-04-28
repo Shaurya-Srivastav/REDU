@@ -220,3 +220,34 @@
 .read-more:hover {
   color: #ff4f4f;
 }
+
+
+.book-actions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch; /* Changed to stretch */
+  margin-top: 10px;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: #ff6b6b;
+  color: #ffffff;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+  height: 40px; /* Fixed height */
+  box-sizing: border-box; /* Include padding and border in the fixed height */
+
+}
+
+.action-button:hover {
+  background-color: #ff4f4f;
+}

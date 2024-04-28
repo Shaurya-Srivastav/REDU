@@ -60,7 +60,7 @@ const Dashboard = () => {
         </div>
         <div className="dashboard-text">
           <h1 className="animated-heading">Welcome to REDU</h1>
-          <p className="animated-text">Empowering refugees through education and support.</p>
+          <p className="animated-text">Empowering education through technology.</p>
           <Link to="/preferences" className="cta-button">Set Preferences</Link>
         </div>
         <div className="dashboard-image">

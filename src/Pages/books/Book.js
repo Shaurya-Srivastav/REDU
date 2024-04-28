@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import './Book.css';
 import profileImage from '../../Assets/profile-placeholder.jpeg';
 import Pagination from '../../Components/pagination/Pagination';
+import ChatModal from '../../Components/chatmodal/ChatModal';
+import PracticeQuestionsModal from '../../Components/practiceQuestionsModal/PracticeQuestionsModal';
+
 
 const Book = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -10,9 +13,24 @@ const Book = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [showFullText, setShowFullText] = useState({});
+  const [showChatModal, setShowChatModal] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [showPracticeQuestionsModal, setShowPracticeQuestionsModal] = useState(false);
+
   const resultsPerPage = 10;
   const navigate = useNavigate();
   const maxPreviewLength = 200; // Maximum number of characters to display in the preview
+
+
+  const handleGeneratePracticeQuestions = (book) => {
+    setSelectedBook(book);
+    setShowPracticeQuestionsModal(true);
+  };
+
+  const handleClosePracticeQuestionsModal = () => {
+    setShowPracticeQuestionsModal(false);
+    setSelectedBook(null);
+  };
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -74,6 +92,16 @@ const Book = () => {
     }));
   };
 
+  const handleChatWithPage = (book) => {
+    setSelectedBook(book);
+    setShowChatModal(true);
+  };
+
+  const handleCloseChatModal = () => {
+    setShowChatModal(false);
+    setSelectedBook(null);
+  };
+
   return (
     <div className="book-container">
       <div className="book-header">
@@ -122,9 +150,25 @@ const Book = () => {
                       </span>
                     )}
                   </p>
-                  <a href={book.URL} target="_blank" rel="noopener noreferrer">
-                    View PDF
-                  </a>
+                  <div className="book-actions">
+                    <a href={book.URL} target="_blank" rel="noopener noreferrer" className="action-button">
+                      View PDF
+                    </a>
+                    <button
+                      className="action-button"
+                      onClick={() => handleChatWithPage(book)}
+                      style={{ marginTop: '9.2px' }}
+                    >
+                      Chat With Page
+                    </button>
+                    <button
+                      className="action-button"
+                      onClick={() => handleGeneratePracticeQuestions(book)}
+                      style={{ marginTop: '9.2px' }}
+                    >
+                      Generate Practice Questions
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -139,6 +183,18 @@ const Book = () => {
           />
         )}
       </div>
+      {showChatModal && (
+        <ChatModal
+          book={selectedBook}
+          onClose={handleCloseChatModal}
+        />
+      )}
+      {showPracticeQuestionsModal && (
+      <PracticeQuestionsModal
+        book={selectedBook}
+        onClose={handleClosePracticeQuestionsModal}
+      />
+    )}
     </div>
   );
 };
