@@ -12,9 +12,12 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    // Handle logout logic here
-    console.log('Logging out...');
-  };
+    // Remove the token from local storage
+    localStorage.removeItem('token');
+    // Optionally, perform any additional logout logic
+    console.log('Token removed from local storage. Logging out...');
+    navigate('/login');
+};
 
   const handleChatbotClick = () => {
     navigate('/chatbot');

@@ -30,10 +30,12 @@ const DiscussionPopup = ({ discussion, onClose }) => {
   };
 
   const handleReplySubmit = async () => {
+    const token = localStorage.getItem('token');
     try {
       const response = await fetch(`http://150.136.47.221:5000/api/discussions/${discussion.id}/replies`, {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ content: reply }),

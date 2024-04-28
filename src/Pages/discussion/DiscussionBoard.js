@@ -61,7 +61,14 @@ const DiscussionBoard = () => {
         url += `?${params.join('&')}`;
       }
 
-      const response = await fetch(url);
+      const token = localStorage.getItem('token'); // Get the token from storage
+
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+          'Content-Type': 'application/json'
+        }
+      });
       if (response.ok) {
         const data = await response.json();
         console.log('Fetched discussions:', data);

@@ -49,9 +49,11 @@ const NewDiscussionModal = ({ onSubmit, onClose, categories }) => {
     };
 
     try {
+      const token = localStorage.getItem('token'); // Get the token from localStorage
       const response = await fetch('http://150.136.47.221:5000/api/discussions', {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${token}`, 
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),

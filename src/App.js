@@ -7,19 +7,23 @@ import Preference from './Pages/preference/Preference';
 import Chatbot from './Pages/chatbot/Chatbot';
 import Book from './Pages/books/Book';
 import DiscussionBoard from './Pages/discussion/DiscussionBoard';
+import { AuthProvider } from './AuthContext/AuthContext';
 
 const App = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<LoginSignupPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/preferences" element={<Preference />} />
-        <Route path="/chatbot" element={<Chatbot />} />
-        <Route path="/books" element={<Book />} />
-        <Route path="/discussion" element={<DiscussionBoard />} />
-        {/* Add other routes for your application */}
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<LoginSignupPage />} />
+          <Route path="/login" element={<LoginSignupPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/preferences" element={<Preference />} />
+          <Route path="/chatbot" element={<Chatbot />} />
+          <Route path="/books" element={<Book />} />
+          <Route path="/discussion" element={<DiscussionBoard />} />
+          {/* Add other routes for your application */}
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 };

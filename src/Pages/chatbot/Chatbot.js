@@ -25,9 +25,14 @@ const Chatbot = () => {
   };
 
   const handleDeleteChatSession = async (chatId) => {
+    const token = localStorage.getItem('token'); // Get the token from localStorage
     try {
       await fetch(`http://150.136.47.221:5000/api/delete-chat-session/${chatId}`, {
         method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header
+            'Content-Type': 'application/json'
+        }
       });
       fetchChatSessions(); // Fetch the updated chat sessions after deletion
       setSelectedChatId(null); // Reset the selected chat ID
@@ -48,14 +53,28 @@ const Chatbot = () => {
   }, []);
 
   const fetchChatSessions = async () => {
+    const token = localStorage.getItem('token'); // Get the token from storage
     try {
-      const response = await fetch('http://150.136.47.221:5000/api/chat-sessions');
-      const data = await response.json();
-      setChatSessions(data);
+        const response = await fetch('http://150.136.47.221:5000/api/chat-sessions', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            setChatSessions(data);
+        } else {
+            console.error('Failed to fetch chat sessions:', data);
+            setChatSessions([]); // Handle errors or unauthorized access by setting an empty array or handling appropriately
+        }
     } catch (error) {
-      console.error('Error:', error);
+        console.error('Error fetching chat sessions:', error);
+        setChatSessions([]); // Handle network errors or exceptions
     }
-  };
+};
+
 
   const fetchChatHistory = async (chatId) => {
     try {
@@ -97,6 +116,7 @@ const Chatbot = () => {
   };
 
   const handleSendMessage = async (e) => {
+    const token = localStorage.getItem('token'); // Get the token from storage
     e.preventDefault();
 
     if (inputMessage.trim() !== '') {
@@ -110,11 +130,12 @@ const Chatbot = () => {
 
       try {
         let chatId = selectedChatId;
-
+        
         if (!selectedChatId) {
           const newChatSessionResponse = await fetch('http://150.136.47.221:5000/api/new-chat', {
             method: 'POST',
             headers: {
+              'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ session_name: inputMessage.split(' ').slice(0, 3).join(' ') }),
