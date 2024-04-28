@@ -5,6 +5,7 @@ import profileImage from '../../Assets/profile-placeholder.jpeg';
 import Pagination from '../../Components/pagination/Pagination';
 import ChatModal from '../../Components/chatmodal/ChatModal';
 import PracticeQuestionsModal from '../../Components/practiceQuestionsModal/PracticeQuestionsModal';
+import RelatedVideosModal from '../../Components/relatedVideosModal/RelatedVideosModal';
 
 
 const Book = () => {
@@ -16,11 +17,22 @@ const Book = () => {
   const [showChatModal, setShowChatModal] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [showPracticeQuestionsModal, setShowPracticeQuestionsModal] = useState(false);
+  const [showRelatedVideosModal, setShowRelatedVideosModal] = useState(false);
 
   const resultsPerPage = 10;
   const navigate = useNavigate();
   const maxPreviewLength = 200; // Maximum number of characters to display in the preview
 
+
+  const handleShowRelatedVideos = (book) => {
+    setSelectedBook(book);
+    setShowRelatedVideosModal(true);
+  };
+
+  const handleCloseRelatedVideosModal = () => {
+    setShowRelatedVideosModal(false);
+    setSelectedBook(null);
+  };
 
   const handleGeneratePracticeQuestions = (book) => {
     setSelectedBook(book);
@@ -108,7 +120,7 @@ const Book = () => {
         <div className="logo">REDU</div>
         <ul>
           <li onClick={handleDashboardClick}>Dashboard</li>
-          <li onClick={handleChatbotClick}>Chatbot</li>
+          <li onClick={handleChatbotClick}>AI Tutoring</li>
           <li onClick={handleDiscussionClick}>Discussion Board</li>
         </ul>
         <img src={profileImage} alt="Profile" className="profile-image" />
@@ -168,6 +180,13 @@ const Book = () => {
                     >
                       Generate Practice Questions
                     </button>
+                    <button
+                      className="action-button"
+                      onClick={() => handleShowRelatedVideos(book)}
+                      style={{ marginTop: '9.2px' }}
+                    >
+                      Related Videos
+                    </button>
                   </div>
                 </div>
               </div>
@@ -195,6 +214,12 @@ const Book = () => {
         onClose={handleClosePracticeQuestionsModal}
       />
     )}
+     {showRelatedVideosModal && (
+        <RelatedVideosModal
+          book={selectedBook}
+          onClose={handleCloseRelatedVideosModal}
+        />
+      )}
     </div>
   );
 };

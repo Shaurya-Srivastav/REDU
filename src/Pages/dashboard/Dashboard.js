@@ -42,7 +42,7 @@ const Dashboard = () => {
           </li>
           <li onClick={handleChatbotClick}>
             <i className="fas fa-robot"></i>
-            <span>Chatbot</span>
+            <span>AI Tutoring</span>
           </li>
           <li onClick={handleDiscussionClick}>
             <i className="fas fa-comments"></i>
